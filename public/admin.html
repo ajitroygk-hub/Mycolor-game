@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Control</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        .box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
+        button { background: #28a745; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Admin Control Panel</h2>
+        <label>Set Next Result:</label>
+        <select id="res" style="width: 100%; padding: 10px;">
+            <option value="Red">Red</option>
+            <option value="Green">Green</option>
+        </select>
+        <label>Admin WhatsApp/UPI Number:</label>
+        <input type="text" id="num" placeholder="Enter Number">
+        <button onclick="update()">Update Game</button>
+    </div>
+
+    <script>
+        async function update() {
+            const nextResult = document.getElementById('res').value;
+            const adminNumber = document.getElementById('num').value;
+            const res = await fetch('/api/admin/update', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ nextResult, adminNumber })
+            });
+            const data = await res.json();
+            alert(data.message);
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Real Color Trade</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body { font-family: Arial; background: #121212; color: white; text-align: center; }
+        .box { background: #1f1f1f; padding: 20px; margin: 20px; border-radius: 15px; border: 1px solid #00ff00; }
+        #timer { font-size: 40px; color: #ffcc00; }
+        .btn { padding: 15px 30px; margin: 10px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .green { background: #28a745; color: white; }
+        .red { background: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+    <h1>COLOR TRADE PRO</h1>
+    <div class="box">
+        <div>Period: <span id="period">Loading...</span></div>
+        <div id="timer">00:00</div>
+    </div>
+    <button class="green">Join Green</button>
+    <button class="red">Join Red</button>
+    <script>
+        const socket = io();
+        socket.on('timer', (data) => {
+            document.getElementById('period').innerText = data.period;
+            let mins = Math.floor(data.timeLeft / 60);
+            let secs = data.timeLeft % 60;
+            document.getElementById('timer').innerText = (mins < 10 ? '0' : '') + mins + ":" + (secs < 10 ? '0' : '') + secs;
+        });
+        socket.on('gameResult', (data) => {
+            alert("Next Round Started! Last Win: " + data.color);
+        });
+    </script>
+</body>
+</html>
